@@ -1,0 +1,1 @@
+exports.Scan = require("./Scan");
