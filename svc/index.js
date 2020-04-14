@@ -13,6 +13,7 @@ module.exports = { master, commander, masterPerUrl };
 async function master(req) {
   if (gateway(req)) {
     commander(req.body);
+
     return;
   } else {
     return "invalid";
