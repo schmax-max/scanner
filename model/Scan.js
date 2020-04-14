@@ -4,45 +4,45 @@ const mongoose = require("mongoose");
 const schema = new mongoose.Schema({
   _type: {
     type: "string",
-    default: "Article"
+    default: "Article",
   },
   _id: {
-    type: "ObjectId"
+    type: "ObjectId",
   },
   updated_at: {
     type: "date",
-    format: "date-time"
+    format: "date-time",
   },
   content_url: {
-    type: "string"
+    type: "string",
   },
   extract: {
-    type: "object"
+    type: "object",
   },
   links: {
-    type: "object"
+    type: "object",
   },
   analysis: {
-    type: "object"
+    type: "object",
   },
   word_arrays: {
-    type: "object"
+    type: "object",
   },
   frequent_words: {
-    type: "array"
+    type: "array",
   },
   search_words: {
-    type: "array"
+    type: "array",
   },
   core: {
-    type: "object"
+    type: "object",
   },
   authors: {
-    type: "object"
+    type: "object",
   },
   url_info: {
-    type: "object"
-  }
+    type: "object",
+  },
 });
 
 schema.set("toJSON", { virtuals: true });
@@ -53,10 +53,10 @@ function createModels() {
     "photos",
     "podcasts",
     "videos",
-    "newsletters"
+    "newsletters",
   ];
   const models = {};
-  collections.forEach(collection => {
+  collections.forEach((collection) => {
     models[collection] = mongoose.model(
       `scan_${collection}`,
       schema,

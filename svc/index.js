@@ -90,8 +90,15 @@ async function masterPerUrl(content_url, refs, coreInfo) {
 
 async function queryExistingScans(content_url) {
   const { content_type } = analyseUrl(content_url);
-  const item = await Scan[`${content_type}s`].findOne({ content_url });
-  return item;
+  const model = Scan[`${content_type}s`];
+  if (model) {
+    const item = await model.findOne({ content_url });
+    return item;
+  } else {
+    console.log("missing content type");
+    console.log({ content_type });
+  }
+  return;
 }
 
 async function postToCalculator({ core, links }, refs) {
