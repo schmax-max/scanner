@@ -24,7 +24,7 @@ async function commander({
   source_type,
   links = [],
   extras = [],
-  coreInfos = []
+  coreInfos = [],
 }) {
   let iterations = links.length;
   // console.log({ source_type });
@@ -97,7 +97,7 @@ async function postToCalculator({ core, links }, refs) {
   const calculatorConfig = {
     target: "calculator",
     data: { core, links, refs },
-    mins: 1
+    mins: 1,
   };
   return await postData(calculatorConfig);
 }
@@ -109,7 +109,7 @@ function postToLibrarian(
   const librarianConfig = {
     target: "librarian",
     data: { core, url_info, word_arrays, frequent_words, search_words, scores },
-    mins: 5
+    mins: 5,
   };
   postData(librarianConfig);
   return;
@@ -117,9 +117,7 @@ function postToLibrarian(
 
 async function updateScan(item) {
   const { content_url, content_type } = item.core;
-  const updated_at = moment()
-    .tz("America/Chicago")
-    .toISOString();
+  const updated_at = moment().tz("America/Chicago").toISOString();
   const options = { upsert: true, new: true };
   item = Object.assign(item, { updated_at });
   return await Scan[`${content_type}s`].findOneAndUpdate(

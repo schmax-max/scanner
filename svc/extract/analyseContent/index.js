@@ -14,12 +14,13 @@ function analyseContent(articleTitle, pureContent) {
   pureContent = unidecode(pureContent);
 
   const {
+    identifier_words,
     excerpt,
     counts,
     words_per,
     wordCount,
     articleWordsUpperCase,
-    articleWordsLowerCase
+    articleWordsLowerCase,
   } = processPureContent(pureContent);
 
   const { frequency_analysis, density } = processLowerCase(
@@ -56,7 +57,7 @@ function analyseContent(articleTitle, pureContent) {
     single_capital,
     single_title,
     multi_capital,
-    multi_title
+    multi_title,
   };
 
   const frequent_words = _.concat(
@@ -84,16 +85,17 @@ function analyseContent(articleTitle, pureContent) {
     counts,
     words_per,
     density,
-    frequency_analysis
+    frequency_analysis,
   };
 
   return {
+    identifier_words,
     analysis,
     word_arrays,
     frequent_words,
     search_words,
     excerpt,
-    content_minutes
+    content_minutes,
   };
 }
 
@@ -102,5 +104,5 @@ function ensureNewParagraphs(text) {
 }
 
 module.exports = {
-  analyseContent
+  analyseContent,
 };

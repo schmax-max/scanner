@@ -1,72 +1,98 @@
+function processPureContent(pureContent) {
+  const quotesArrays = pureContent.match(/“/g || []);
+  const sentencesArrays = pureContent.match(/\./g || []);
+  let quotes = 0;
+  let sentences = 0;
+  if (quotesArrays) {
+    quotes = quotesArrays.length;
+  }
+  if (sentencesArrays) {
+    sentences = sentencesArrays.length;
+  }
 
-function processPureContent (pureContent) {
-    const quotesArrays = pureContent.match(/“/g || [])
-    const sentencesArrays = pureContent.match(/\./g || [])
-    let quotes = 0
-    let sentences = 0
-    if (quotesArrays) { quotes = quotesArrays.length }
-    if (sentencesArrays) { sentences = sentencesArrays.length }
+  let paras = pureContent.split(/\r?([\n]{1,}|[\r]{1,}|[ ]{2,})/g);
+  const identifier_words = {
+    start_words: getInitialWords(paras[0], 7),
+    end_words: getInitialWords(paras[-1], 7),
+  };
 
+  let longParas = [];
+  let shortParas = [];
+  let contentParas = [];
+  let excerptParas = [];
 
-    let paras = pureContent.split(/\r?([\n]{1,}|[\r]{1,}|[ ]{2,})/g)
-
-    let longParas = []
-    let shortParas = []
-    let contentParas = []
-    let excerptParas = []
-    
-    paras.forEach((individualPara) => {
-        if (individualPara.length > 150) { longParas.push(individualPara) }
-        if (individualPara.length > 50 && individualPara.length <= 150 ) { shortParas.push(individualPara) }
-        if (individualPara.length > 50 ) { contentParas.push(individualPara) }
-        if (individualPara.length > 75 ) { excerptParas.push(individualPara) }
-    })
-    const long_paras = longParas.length
-    const short_paras = shortParas.length
-    const contentParaCount = contentParas.length
-
-    let excerpt = ''
-    if (excerptParas.length > 0) {
-        excerpt = excerptParas[0]
-    } else if (short_paras > 0) {
-        excerpt = shortParas[0]
+  paras.forEach((individualPara) => {
+    if (individualPara.length > 150) {
+      longParas.push(individualPara);
     }
-
-    const content = contentParas.join(' ')
-    const noCharacterContent = content.replace(/[^áÁéÉíÍóÓúÚñÑüÜÆæØøÅåÄäÖöÜüẞßœŒôÔîÏïÎëËêÊèÈéÉçÇâÂàÀÿŸûÛùÙŠšČčĆćŽžA-Za-z\-\s\d\’\']/g, " ")
-    
-    const articleWordsUpperCase = noCharacterContent.split(/[\W]/)
-    const wordCount = articleWordsUpperCase.length
-
-    const noCharacterContentLowerCase = noCharacterContent.toLowerCase()
-    const articleWordsLowerCase = noCharacterContentLowerCase.split(/[\W]/)
-
-    const counts = {
-      quotes,
-      sentences,
-      short_paras,
-      long_paras,
-      words: wordCount
+    if (individualPara.length > 50 && individualPara.length <= 150) {
+      shortParas.push(individualPara);
     }
-
-    const words_per = {
-        para: +(wordCount / Math.max(contentParaCount, 1)).toFixed(1),
-        long_para: +(wordCount / Math.max(long_paras, 1)).toFixed(1),
-        quote: +(wordCount / Math.max(quotes, 1)).toFixed(1),
-        sentence: +(wordCount / Math.max(sentences, 1)).toFixed(1),
+    if (individualPara.length > 50) {
+      contentParas.push(individualPara);
     }
-
-    return {
-        excerpt,
-        content,
-        counts,
-        words_per,
-        wordCount,
-        articleWordsUpperCase,
-        articleWordsLowerCase
+    if (individualPara.length > 75) {
+      excerptParas.push(individualPara);
     }
+  });
+  const long_paras = longParas.length;
+  const short_paras = shortParas.length;
+  const contentParaCount = contentParas.length;
+
+  let excerpt = "";
+  if (excerptParas.length > 0) {
+    excerpt = excerptParas[0];
+  } else if (short_paras > 0) {
+    excerpt = shortParas[0];
+  }
+
+  const content = contentParas.join(" ");
+  const noCharacterContent = content.replace(
+    /[^áÁéÉíÍóÓúÚñÑüÜÆæØøÅåÄäÖöÜüẞßœŒôÔîÏïÎëËêÊèÈéÉçÇâÂàÀÿŸûÛùÙŠšČčĆćŽžA-Za-z\-\s\d\’\']/g,
+    " "
+  );
+
+  const articleWordsUpperCase = noCharacterContent.split(/[\W]/);
+  const wordCount = articleWordsUpperCase.length;
+
+  const noCharacterContentLowerCase = noCharacterContent.toLowerCase();
+  const articleWordsLowerCase = noCharacterContentLowerCase.split(/[\W]/);
+
+  const counts = {
+    quotes,
+    sentences,
+    short_paras,
+    long_paras,
+    words: wordCount,
+  };
+
+  const words_per = {
+    para: +(wordCount / Math.max(contentParaCount, 1)).toFixed(1),
+    long_para: +(wordCount / Math.max(long_paras, 1)).toFixed(1),
+    quote: +(wordCount / Math.max(quotes, 1)).toFixed(1),
+    sentence: +(wordCount / Math.max(sentences, 1)).toFixed(1),
+  };
+
+  return {
+    identifier_words,
+    excerpt,
+    content,
+    counts,
+    words_per,
+    wordCount,
+    articleWordsUpperCase,
+    articleWordsLowerCase,
+  };
+}
+
+function getInitialWords(para, count) {
+  const words = paras.split(" ");
+  const wordArrays = words.filter((word, i) => {
+    if (i < count) word;
+  });
+  return wordArrays.join(" ");
 }
 
 module.exports = {
-    processPureContent,
-}
+  processPureContent,
+};
