@@ -24,7 +24,7 @@ async function analysis(content_url, data, frame_compatible) {
     text,
     links,
     videos,
-    author
+    author,
   } = unfluff(data);
 
   if (softTitle) title = softTitle;
@@ -34,7 +34,7 @@ async function analysis(content_url, data, frame_compatible) {
     target: "helper-date",
     data: { date, url: content_url },
     trigger: "scanner",
-    mins: 1
+    mins: 1,
   };
   const publication_date = await postData(dateConfig);
   const domain = getDomain(content_url);
@@ -48,11 +48,11 @@ async function analysis(content_url, data, frame_compatible) {
     frame_compatible,
     keywords,
     description,
-    excerpt: content.excerpt
+    excerpt: content.excerpt,
   };
 
   const { content_type } = content.url_info;
-  const { content_minutes } = content;
+  const { content_minutes, identifier_words } = content;
 
   content.core = {
     title,
@@ -63,7 +63,8 @@ async function analysis(content_url, data, frame_compatible) {
     image,
     language: lang,
     publisher,
-    content_minutes
+    content_minutes,
+    identifier_words,
   };
 
   return content;
