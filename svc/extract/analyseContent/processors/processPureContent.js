@@ -85,7 +85,7 @@ function processPureContent(pureContent) {
   };
 }
 
-function getInitialWords(para, count) {
+function getInitialWords(paras, count) {
   const words = paras.split(" ");
   const wordArrays = words.filter((word, i) => {
     if (i < count) word;

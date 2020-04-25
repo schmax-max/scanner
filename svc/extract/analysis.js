@@ -30,7 +30,7 @@ async function analysis(content_url, data, frame_compatible) {
   if (softTitle) title = softTitle;
   if (canonicalLink) content_url = canonicalLink;
 
-  if (!date) date = "";
+  // if (!date) date = "";
   const dateConfig = {
     target: "helper-date",
     data: { date, url: content_url },
