@@ -16,6 +16,8 @@ async function master(req) {
 
     return;
   } else {
+    consolelog({ body: req.body });
+    console.log("request to scanner not validated");
     return "invalid";
   }
 }
@@ -79,7 +81,11 @@ async function masterPerUrl(content_url, refs, coreInfo) {
     } else {
       const scores = await postToCalculator(item, refs);
       const update = await updateScan(item);
-      postToLibrarian(item, scores);
+      if (scores) {
+        postToLibrarian(item, scores);
+      } else {
+        console.log("undefined scores from calculator");
+      }
       return update;
     }
   } catch (e) {
