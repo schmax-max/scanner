@@ -16,7 +16,7 @@ async function master(req) {
 
     return;
   } else {
-    consolelog({ body: req.body });
+    console.log({ body: req.body });
     console.log("request to scanner not validated");
     return "invalid";
   }
